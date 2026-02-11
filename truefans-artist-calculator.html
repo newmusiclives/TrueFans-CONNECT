@@ -16,38 +16,46 @@
         div[style*="font-size: 24px"] { font-size: 18px !important; }
         h1[style*="font-size: 30px"] { font-size: 22px !important; }
     }
+    .btn-lang {
+        background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);
+        padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600;
+        cursor: pointer; color: white; font-family: inherit;
+        position: absolute; top: 22px; right: 22px;
+    }
+    .btn-lang:hover { background: rgba(255,255,255,0.3); }
 </style>
 </head>
 <body style="font-family: Arial, sans-serif; max-width: 750px; margin: 20px auto; padding: 15px; background: #f5f5f5;">
 
 <div style="margin-bottom: 12px;">
-    <a href="truefans-connect.html" style="text-decoration: none; color: rgba(0,0,0,0.5); font-size: 13px; font-weight: 500;">&larr; Back to TrueFans ASIA</a>
+    <a href="truefans-connect.html" style="text-decoration: none; color: rgba(0,0,0,0.5); font-size: 13px; font-weight: 500;" data-en="&larr; Back to TrueFans ASIA" data-tl="&larr; Bumalik sa TrueFans ASIA">&larr; Back to TrueFans ASIA</a>
 </div>
 
-<div style="background: linear-gradient(135deg, #f093fb, #f5576c); color: white; padding: 22px; border-radius: 14px; text-align: center; margin-bottom: 18px;">
-    <h1 style="margin: 0; font-size: 30px;">🎤 TrueFans Artist Calculator</h1>
-    <p style="margin: 6px 0 0 0; opacity: 0.9; font-size: 16px;">Your shows + referral earnings</p>
+<div style="background: linear-gradient(135deg, #f093fb, #f5576c); color: white; padding: 22px; border-radius: 14px; text-align: center; margin-bottom: 18px; position: relative;">
+    <button class="btn-lang" id="langBtn" onclick="toggleLang()">&#127477;&#127469; Tagalog</button>
+    <h1 style="margin: 0; font-size: 30px;" data-en="🎤 TrueFans Artist Calculator" data-tl="🎤 TrueFans Calculator ng Artist">🎤 TrueFans Artist Calculator</h1>
+    <p style="margin: 6px 0 0 0; opacity: 0.9; font-size: 16px;" data-en="Your shows + referral earnings" data-tl="Iyong mga show + referral na kita">Your shows + referral earnings</p>
 </div>
 
 <div style="background: white; padding: 24px; border-radius: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
 
     <div style="background: #f8f9fa; padding: 18px; border-radius: 10px; margin-bottom: 18px;">
-        <h3 style="margin: 0 0 14px 0; font-size: 18px; color: #333;">Current Earnings</h3>
+        <h3 style="margin: 0 0 14px 0; font-size: 18px; color: #333;" data-en="Current Earnings" data-tl="Kasalukuyang Kita">Current Earnings</h3>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
             <div>
-                <label style="display: block; margin-bottom: 5px; color: #555; font-size: 15px;">Per Show (₱)</label>
+                <label style="display: block; margin-bottom: 5px; color: #555; font-size: 15px;" data-en="Per Show (₱)" data-tl="Bawat Show (₱)">Per Show (₱)</label>
                 <input type="number" id="perShow" value="2000" min="0" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
             </div>
             <div>
-                <label style="display: block; margin-bottom: 5px; color: #555; font-size: 15px;">Number in Audience</label>
+                <label style="display: block; margin-bottom: 5px; color: #555; font-size: 15px;" data-en="Number in Audience" data-tl="Bilang ng Audience">Number in Audience</label>
                 <input type="number" id="audience" value="75" min="0" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
             </div>
             <div>
-                <label style="display: block; margin-bottom: 5px; color: #555; font-size: 15px;">Percentage who'll donate</label>
+                <label style="display: block; margin-bottom: 5px; color: #555; font-size: 15px;" data-en="Percentage who'll donate" data-tl="Porsyento na magdo-donate">Percentage who'll donate</label>
                 <input type="number" id="donatePercent" value="20" min="0" max="100" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
             </div>
             <div>
-                <label style="display: block; margin-bottom: 5px; color: #555; font-size: 15px;">Avg Donation (₱)</label>
+                <label style="display: block; margin-bottom: 5px; color: #555; font-size: 15px;" data-en="Avg Donation (₱)" data-tl="Avg na Donasyon (₱)">Avg Donation (₱)</label>
                 <input type="number" id="avgDonation" value="50" min="0" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
             </div>
         </div>
@@ -55,43 +63,43 @@
 
     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 18px;">
         <div>
-            <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #333; font-size: 15px;">Your Shows / per month</label>
+            <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #333; font-size: 15px;" data-en="Your Shows / per month" data-tl="Iyong Shows / bawat buwan">Your Shows / per month</label>
             <input type="number" id="shows" value="15" min="0" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
-            <small style="color: #666; font-size: 13px;">10-20 typical</small>
+            <small style="color: #666; font-size: 13px;" data-en="10-20 typical" data-tl="10-20 karaniwan">10-20 typical</small>
         </div>
         <div>
-            <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #333; font-size: 15px;">Artists you'll refer</label>
+            <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #333; font-size: 15px;" data-en="Artists you'll refer" data-tl="Mga artist na ire-refer mo">Artists you'll refer</label>
             <input type="number" id="friends" value="8" min="0" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
-            <small style="color: #666; font-size: 13px;">5-15 friends</small>
+            <small style="color: #666; font-size: 13px;" data-en="5-15 friends" data-tl="5-15 kaibigan">5-15 friends</small>
         </div>
         <div>
-            <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #333; font-size: 15px;">Venues you'll refer</label>
+            <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #333; font-size: 15px;" data-en="Venues you'll refer" data-tl="Mga venue na ire-refer mo">Venues you'll refer</label>
             <input type="number" id="venues" value="1" min="0" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
-            <small style="color: #666; font-size: 13px;">~15 artists each</small>
+            <small style="color: #666; font-size: 13px;" data-en="~15 artists each" data-tl="~15 artist bawat isa">~15 artists each</small>
         </div>
     </div>
 
     <div style="background: linear-gradient(135deg, #f093fb, #f5576c); color: white; padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 18px;">
-        <div style="font-size: 15px; opacity: 0.9;">Total Monthly Income</div>
+        <div style="font-size: 15px; opacity: 0.9;" data-en="Total Monthly Income" data-tl="Kabuuang Buwanang Kita">Total Monthly Income</div>
         <div id="monthly" style="font-size: 44px; font-weight: bold; margin: 6px 0;">₱0</div>
         <div id="monthlyUsd" style="font-size: 24px; font-weight: bold; opacity: 0.9;">$0</div>
     </div>
 
     <div style="background: #f8f9fa; padding: 14px 18px; border-radius: 10px; margin-bottom: 14px;">
         <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #ddd; font-size: 16px;">
-            <span style="color: #555;">Your shows (fee + 80% donations)</span>
+            <span style="color: #555;" data-en="Your shows (fee + 80% donations)" data-tl="Iyong mga show (bayad + 80% donasyon)">Your shows (fee + 80% donations)</span>
             <span><span id="own" style="font-weight: bold; color: #f5576c;">₱0</span> <span id="ownUsd" style="font-size: 13px; color: #666;">$0</span></span>
         </div>
         <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #ddd; font-size: 16px;">
-            <span style="color: #555;">Tier 1 referrals (2.5%)</span>
+            <span style="color: #555;" data-en="Tier 1 referrals (2.5%)" data-tl="Tier 1 referrals (2.5%)">Tier 1 referrals (2.5%)</span>
             <span><span id="tier1" style="font-weight: bold; color: #f5576c;">₱0</span> <span id="tier1Usd" style="font-size: 13px; color: #666;">$0</span></span>
         </div>
         <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #ddd; font-size: 16px;">
-            <span style="color: #555;">Tier 2 referrals (2.5%)</span>
+            <span style="color: #555;" data-en="Tier 2 referrals (2.5%)" data-tl="Tier 2 referrals (2.5%)">Tier 2 referrals (2.5%)</span>
             <span><span id="tier2" style="font-weight: bold; color: #f5576c;">₱0</span> <span id="tier2Usd" style="font-size: 13px; color: #666;">$0</span></span>
         </div>
         <div style="display: flex; justify-content: space-between; padding: 10px 0 4px 0; border-top: 2px solid #f5576c; margin-top: 6px; font-size: 16px;">
-            <span style="font-weight: bold; color: #333;">Annual Income</span>
+            <span style="font-weight: bold; color: #333;" data-en="Annual Income" data-tl="Taunang Kita">Annual Income</span>
             <span><span id="annual" style="font-weight: bold; color: #f5576c; font-size: 19px;">₱0</span> <span id="annualUsd" style="font-weight: bold; color: #f5576c; font-size: 15px;">$0</span></span>
         </div>
     </div>
@@ -100,18 +108,30 @@
         <p id="increase" style="margin: 0; font-size: 15px; color: #e65100; line-height: 1.5;"></p>
     </div>
 
-    <button onclick="window.location.href='mailto:darryl@truefansconnect.com'" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #f093fb, #f5576c); color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; box-sizing: border-box;">
+    <button onclick="window.location.href='mailto:darryl@truefansconnect.com'" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #f093fb, #f5576c); color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; box-sizing: border-box;" data-en="Join TrueFans (Free)" data-tl="Sumali sa TrueFans (Libre)">
         Join TrueFans (Free)
     </button>
 
 </div>
 
-<div style="text-align: center; margin-top: 12px; font-size: 13px; color: #666; line-height: 1.5;">
+<div style="text-align: center; margin-top: 12px; font-size: 13px; color: #666; line-height: 1.5;" data-en="Free to join • You keep 80% • More professional than cash tips • ₱55.5 = $1 USD" data-tl="Libreng sumali • Panatilihin ang 80% • Mas propesyonal kaysa cash tips • ₱55.5 = $1 USD">
     Free to join • You keep 80% • More professional than cash tips • ₱55.5 = $1 USD
 </div>
 
 <script>
 const PHP_TO_USD = 55.5;
+let currentLang = 'en';
+
+function toggleLang() {
+    currentLang = currentLang === 'en' ? 'tl' : 'en';
+    document.getElementById('langBtn').innerHTML = currentLang === 'en'
+        ? '&#127477;&#127469; Tagalog'
+        : '&#127468;&#127463; English';
+    document.querySelectorAll('[data-en][data-tl]').forEach(el => {
+        el.innerHTML = el.getAttribute('data-' + currentLang);
+    });
+    calc();
+}
 
 function formatPHP(amount) {
     if (isNaN(amount)) return '₱0';
@@ -132,40 +152,23 @@ function calc() {
     const friends = parseInt(document.getElementById('friends').value) || 0;
     const venues = parseInt(document.getElementById('venues').value) || 0;
 
-    // TrueFans per show: audience × donate% × avg donation per donator
     const donators = audience * (donatePercent / 100);
     const truefansPerShow = donators * avgDonation;
-
-    // Base earnings (per show fee)
     const baseMonthly = shows * perShow;
-
-    // 80% of TrueFans donations from your own shows
     const donationsPhp = shows * truefansPerShow * 0.80;
-    const donationsUsd = donationsPhp / PHP_TO_USD;
-
-    // Your own shows total = per show fee + 80% donations
     const ownPhp = baseMonthly + donationsPhp;
     const ownUsd = ownPhp / PHP_TO_USD;
-
-    // Tier 1: Direct friend referrals (2.5% of their revenue)
     const tier1Php = friends * 15 * truefansPerShow * 0.025;
     const tier1Usd = tier1Php / PHP_TO_USD;
-
-    // Tier 2: Second-tier artists (friends' referrals + venue artists)
     const tier2Artists = (friends * 1.5) + (venues * 15);
     const tier2Php = tier2Artists * 15 * truefansPerShow * 0.025;
     const tier2Usd = tier2Php / PHP_TO_USD;
-
-    // Monthly and annual totals
     const monthlyPhp = ownPhp + tier1Php + tier2Php;
     const monthlyUsd = monthlyPhp / PHP_TO_USD;
     const annualPhp = monthlyPhp * 12;
     const annualUsd = annualPhp / PHP_TO_USD;
-
-    // Increase compared to per show fee alone
     const increasePercent = baseMonthly > 0 ? Math.round(((monthlyPhp - baseMonthly) / baseMonthly) * 100) : 0;
 
-    // Update displays
     document.getElementById('own').textContent = formatPHP(ownPhp);
     document.getElementById('ownUsd').textContent = formatUSD(ownUsd);
     document.getElementById('tier1').textContent = formatPHP(tier1Php);
@@ -178,15 +181,24 @@ function calc() {
     document.getElementById('annualUsd').textContent = formatUSD(annualUsd);
 
     if (shows > 0) {
-        document.getElementById('increase').textContent =
-            'You keep your ' + formatPHP(perShow) + ' per show fee PLUS 80% of donations — that\'s ' + increasePercent + '% more than your current per show earnings alone.';
+        if (currentLang === 'tl') {
+            document.getElementById('increase').textContent =
+                'Panatilihin ang iyong ' + formatPHP(perShow) + ' bawat show fee DAGDAG pa ang 80% ng donasyon — ' + increasePercent + '% na mas malaki kaysa sa kasalukuyang kita sa show lang.';
+        } else {
+            document.getElementById('increase').textContent =
+                'You keep your ' + formatPHP(perShow) + ' per show fee PLUS 80% of donations — that\'s ' + increasePercent + '% more than your current per show earnings alone.';
+        }
     } else {
-        document.getElementById('increase').textContent =
-            'Enter your shows above to see how much more you can earn with TrueFans ASIA.';
+        if (currentLang === 'tl') {
+            document.getElementById('increase').textContent =
+                'Ilagay ang iyong mga show sa itaas para makita kung gaano ka pa makakapag-kita sa TrueFans ASIA.';
+        } else {
+            document.getElementById('increase').textContent =
+                'Enter your shows above to see how much more you can earn with TrueFans ASIA.';
+        }
     }
 }
 
-// Initialize calculator on page load
 calc();
 </script>
 
