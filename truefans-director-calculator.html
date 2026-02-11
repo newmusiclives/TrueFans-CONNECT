@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrueFans CONNECT - Director Dashboard</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#4c1d95">
+<link rel="icon" href="https://truefansconnect.com/favicon.ico">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', Arial, sans-serif; background: #f5f5f5; -webkit-font-smoothing: antialiased; }
+
+    /* Login overlay */
+    .login-overlay {
+        position: fixed; inset: 0; z-index: 1000;
+        background: linear-gradient(135deg, #1a1a2e 0%, #2d1b69 50%, #4c1d95 100%);
+        display: flex; align-items: center; justify-content: center;
+    }
+    .login-overlay.hidden { display: none; }
+    .login-box {
+        background: rgba(255,255,255,0.07); backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 20px; padding: 48px 40px; width: 380px; text-align: center;
+    }
+    .login-box h2 {
+        color: white; font-size: 24px; font-weight: 800; margin-bottom: 6px;
+    }
+    .login-box .subtitle {
+        color: rgba(255,255,255,0.5); font-size: 13px; margin-bottom: 32px;
+    }
+    .login-box input[type="password"] {
+        width: 100%; padding: 14px 16px; font-size: 16px;
+        border: 2px solid rgba(255,255,255,0.15); border-radius: 10px;
+        background: rgba(255,255,255,0.06); color: white;
+        outline: none; margin-bottom: 12px; font-family: inherit;
+    }
+    .login-box input[type="password"]::placeholder { color: rgba(255,255,255,0.3); }
+    .login-box input[type="password"]:focus { border-color: rgba(153,15,250,0.6); }
+    .login-error {
+        color: #f87171; font-size: 13px; margin-bottom: 12px; display: none;
+    }
+    .login-btn {
+        width: 100%; padding: 14px; border: none; border-radius: 10px;
+        background: linear-gradient(135deg, #7c3aed, #990FFA);
+        color: white; font-size: 15px; font-weight: 700;
+        cursor: pointer; font-family: inherit; transition: opacity 0.2s;
+    }
+    .login-btn:hover { opacity: 0.9; }
+    .login-lock { font-size: 36px; margin-bottom: 16px; }
+
+    /* Calculator (hidden until login) */
+    .calculator { display: none; max-width: 750px; margin: 20px auto; padding: 15px; }
+    .calculator.visible { display: block; }
+
+    @media (max-width: 600px) {
+        .login-box { width: 90%; padding: 32px 24px; }
+        .calculator { margin: 10px auto; padding: 10px; }
+        div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+        div[style*="font-size: 44px"] { font-size: 32px !important; }
+        div[style*="font-size: 22px"] { font-size: 16px !important; }
+        h1[style*="font-size: 26px"] { font-size: 20px !important; }
+    }
+</style>
+</head>
+<body>
+
+<!-- Login Screen -->
+<div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+        <div class="login-lock">&#128274;</div>
+        <h2>Director Access</h2>
+        <div class="subtitle">TrueFans CONNECT Asia</div>
+        <input type="password" id="passwordInput" placeholder="Enter password" onkeydown="if(event.key==='Enter')attemptLogin()">
+        <div class="login-error" id="loginError">Incorrect password. Please try again.</div>
+        <button class="login-btn" onclick="attemptLogin()">Sign In</button>
+    </div>
+</div>
+
+<!-- Calculator -->
+<div class="calculator" id="calculator">
+
+<div style="background: linear-gradient(135deg, #1a1a2e, #4c1d95); color: white; padding: 22px; border-radius: 14px; text-align: center; margin-bottom: 18px;">
+    <h1 style="margin: 0; font-size: 26px; font-weight: 800;">TrueFans CONNECT Asia</h1>
+    <p style="margin: 6px 0 0 0; opacity: 0.7; font-size: 14px;">Director Earnings Calculator — Darryl Saunders</p>
+</div>
+
+<div style="background: white; padding: 24px; border-radius: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+
+    <!-- Artist Assumptions -->
+    <div style="background: #f8f9fa; padding: 18px; border-radius: 10px; margin-bottom: 18px;">
+        <h3 style="margin: 0 0 14px 0; font-size: 16px; color: #333;">Artist Assumptions</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div>
+                <label style="display: block; margin-bottom: 5px; color: #555; font-size: 14px;">Number in Audience</label>
+                <input type="number" id="audience" value="100" min="0" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px; color: #555; font-size: 14px;">Percentage who'll donate</label>
+                <input type="number" id="donatePercent" value="20" min="0" max="100" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px; color: #555; font-size: 14px;">Avg Donation (&#8369;)</label>
+                <input type="number" id="avgDonation" value="50" min="0" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px; color: #555; font-size: 14px;">Shows / per month</label>
+                <input type="number" id="showsPerMonth" value="15" min="0" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
+            </div>
+        </div>
+    </div>
+
+    <!-- Your Referrals -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+        <div>
+            <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #333; font-size: 15px;">Artists you'll refer</label>
+            <input type="number" id="artists" value="20" min="0" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
+            <small style="color: #666; font-size: 13px;">Artists you personally recruit</small>
+        </div>
+        <div>
+            <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #333; font-size: 15px;">Venues you'll refer</label>
+            <input type="number" id="venues" value="10" min="0" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
+            <small style="color: #666; font-size: 13px;">Each venue brings ~15 artists</small>
+        </div>
+    </div>
+
+    <!-- TFC Asia Total -->
+    <div style="background: #f3e8ff; padding: 18px; border-radius: 10px; margin-bottom: 18px; border: 1px solid rgba(124,58,237,0.15);">
+        <h3 style="margin: 0 0 14px 0; font-size: 16px; color: #4c1d95;">TFC Asia Platform Total</h3>
+        <div>
+            <label style="display: block; margin-bottom: 5px; color: #555; font-size: 14px;">Number of artists on TFC Asia platform</label>
+            <input type="number" id="totalArtists" value="500" min="0" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #c4b5fd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
+            <small style="color: #666; font-size: 13px;">All artists across the entire TFC Asia network</small>
+        </div>
+    </div>
+
+    <!-- Monthly Total -->
+    <div style="background: linear-gradient(135deg, #1a1a2e, #4c1d95); color: white; padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 18px;">
+        <div style="font-size: 14px; opacity: 0.8;">Total Monthly Earnings</div>
+        <div id="monthly" style="font-size: 44px; font-weight: 800; margin: 6px 0;">&#8369;0</div>
+        <div id="monthlyUsd" style="font-size: 22px; font-weight: 700; opacity: 0.85;">$0</div>
+    </div>
+
+    <!-- Breakdown -->
+    <div style="background: #f8f9fa; padding: 14px 18px; border-radius: 10px; margin-bottom: 14px;">
+        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #ddd; font-size: 15px;">
+            <span style="color: #555;">Tier 1 — Your direct artists (2.5%)</span>
+            <span><span id="tier1" style="font-weight: bold; color: #7c3aed;">&#8369;0</span> <span id="tier1Usd" style="font-size: 12px; color: #666;">$0</span></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #ddd; font-size: 15px;">
+            <span style="color: #555;">Tier 2 — Venue artists (2.5%)</span>
+            <span><span id="tier2" style="font-weight: bold; color: #7c3aed;">&#8369;0</span> <span id="tier2Usd" style="font-size: 12px; color: #666;">$0</span></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #ddd; font-size: 15px;">
+            <span style="color: #555;">
+                <span style="background: linear-gradient(135deg, #7c3aed, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700;">Director Bonus</span>
+                — 2.5% all TFC Asia revenue
+            </span>
+            <span><span id="bonus" style="font-weight: bold; color: #ec4899;">&#8369;0</span> <span id="bonusUsd" style="font-size: 12px; color: #666;">$0</span></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 10px 0 4px 0; border-top: 2px solid #7c3aed; margin-top: 6px; font-size: 16px;">
+            <span style="font-weight: bold; color: #333;">Annual Earnings</span>
+            <span><span id="annual" style="font-weight: bold; color: #7c3aed; font-size: 19px;">&#8369;0</span> <span id="annualUsd" style="font-weight: bold; color: #7c3aed; font-size: 14px;">$0</span></span>
+        </div>
+    </div>
+
+    <!-- Summary -->
+    <div style="background: #f3e8ff; border-left: 4px solid #7c3aed; padding: 12px 14px; border-radius: 5px; margin-bottom: 14px;">
+        <p id="summary" style="margin: 0; font-size: 14px; color: #4c1d95; line-height: 1.5;"></p>
+    </div>
+
+    <a href="mailto:darryl@truefansconnect.com" style="display: block; width: 100%; padding: 14px; background: linear-gradient(135deg, #7c3aed, #990FFA); color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; box-sizing: border-box; text-align: center; text-decoration: none;">
+        Contact TrueFans HQ
+    </a>
+
+</div>
+
+<div style="text-align: center; margin-top: 12px; font-size: 12px; color: #999; line-height: 1.5;">
+    Confidential — TFC Asia Director Dashboard &bull; &#8369;55.5 = $1 USD
+</div>
+
+</div>
+
+<script>
+// Password protection
+const HASH = '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8';
+let loginAttempts = 0;
+let lockoutUntil = 0;
+
+async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function attemptLogin() {
+    if (Date.now() < lockoutUntil) {
+        const secs = Math.ceil((lockoutUntil - Date.now()) / 1000);
+        document.getElementById('loginError').textContent = 'Too many attempts. Try again in ' + secs + 's.';
+        document.getElementById('loginError').style.display = 'block';
+        return;
+    }
+    const password = document.getElementById('passwordInput').value;
+    const hash = await sha256(password);
+    if (hash === HASH) {
+        document.getElementById('loginOverlay').classList.add('hidden');
+        document.getElementById('calculator').classList.add('visible');
+        calc();
+    } else {
+        loginAttempts++;
+        if (loginAttempts >= 5) {
+            lockoutUntil = Date.now() + 30000;
+            document.getElementById('loginError').textContent = 'Too many attempts. Locked for 30 seconds.';
+        } else {
+            document.getElementById('loginError').textContent = 'Incorrect password. Please try again.';
+        }
+        document.getElementById('loginError').style.display = 'block';
+        document.getElementById('passwordInput').value = '';
+        document.getElementById('passwordInput').focus();
+    }
+}
+
+// Calculator
+const PHP_TO_USD = 55.5;
+
+function formatPHP(amount) {
+    if (isNaN(amount)) return '\u20B10';
+    return '\u20B1' + Math.round(amount).toLocaleString('en-PH');
+}
+function formatUSD(amount) {
+    if (isNaN(amount)) return '$0';
+    return '$' + Math.round(amount).toLocaleString('en-US');
+}
+
+function calc() {
+    const audience = parseInt(document.getElementById('audience').value) || 0;
+    const donatePercent = parseFloat(document.getElementById('donatePercent').value) || 0;
+    const avgDonation = parseInt(document.getElementById('avgDonation').value) || 0;
+    const showsPerMonth = parseInt(document.getElementById('showsPerMonth').value) || 0;
+    const artists = parseInt(document.getElementById('artists').value) || 0;
+    const venues = parseInt(document.getElementById('venues').value) || 0;
+    const totalArtists = parseInt(document.getElementById('totalArtists').value) || 0;
+
+    // TrueFans per show
+    const donators = audience * (donatePercent / 100);
+    const truefansPerShow = donators * avgDonation;
+
+    // Tier 1: Direct artist referrals (2.5% of their revenue)
+    const tier1Php = artists * showsPerMonth * truefansPerShow * 0.025;
+    const tier1Usd = tier1Php / PHP_TO_USD;
+
+    // Tier 2: Venue artists (each venue ~15 artists, 2.5% of their revenue)
+    const tier2Php = venues * 15 * showsPerMonth * truefansPerShow * 0.025;
+    const tier2Usd = tier2Php / PHP_TO_USD;
+
+    // Director bonus: 2.5% of ALL TFC Asia revenue
+    const totalPlatformRevenue = totalArtists * showsPerMonth * truefansPerShow;
+    const bonusPhp = totalPlatformRevenue * 0.025;
+    const bonusUsd = bonusPhp / PHP_TO_USD;
+
+    // Monthly and annual totals
+    const monthlyPhp = tier1Php + tier2Php + bonusPhp;
+    const monthlyUsd = monthlyPhp / PHP_TO_USD;
+    const annualPhp = monthlyPhp * 12;
+    const annualUsd = annualPhp / PHP_TO_USD;
+
+    // Update displays
+    document.getElementById('tier1').textContent = formatPHP(tier1Php);
+    document.getElementById('tier1Usd').textContent = formatUSD(tier1Usd);
+    document.getElementById('tier2').textContent = formatPHP(tier2Php);
+    document.getElementById('tier2Usd').textContent = formatUSD(tier2Usd);
+    document.getElementById('bonus').textContent = formatPHP(bonusPhp);
+    document.getElementById('bonusUsd').textContent = formatUSD(bonusUsd);
+    document.getElementById('monthly').textContent = formatPHP(monthlyPhp);
+    document.getElementById('monthlyUsd').textContent = formatUSD(monthlyUsd);
+    document.getElementById('annual').textContent = formatPHP(annualPhp);
+    document.getElementById('annualUsd').textContent = formatUSD(annualUsd);
+
+    const venueArtists = venues * 15;
+    const bonusPercent = monthlyPhp > 0 ? Math.round((bonusPhp / monthlyPhp) * 100) : 0;
+    document.getElementById('summary').textContent =
+        'With ' + artists + ' direct artists, ' + venues + ' venues (' + venueArtists + ' venue artists), and ' +
+        totalArtists + ' total platform artists, your Director Bonus alone is ' +
+        formatPHP(bonusPhp) + '/month (' + formatUSD(bonusUsd) + ') — ' +
+        bonusPercent + '% of your total earnings.';
+}
+</script>
+
+</body>
+</html>

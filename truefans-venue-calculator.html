@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrueFans Venue Calculator</title>
+<meta name="description" content="Calculate how much passive income your venue can earn with TrueFans CONNECT referral commissions.">
+<meta name="theme-color" content="#1a73e8">
+<link rel="icon" href="https://truefansconnect.com/favicon.ico">
+<style>
+    @media (max-width: 600px) {
+        body { margin: 10px auto !important; padding: 10px !important; }
+        div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+        div[style*="font-size: 44px"] { font-size: 32px !important; }
+        div[style*="font-size: 24px"] { font-size: 18px !important; }
+        h1[style*="font-size: 30px"] { font-size: 22px !important; }
+    }
+</style>
+</head>
+<body style="font-family: Arial, sans-serif; max-width: 750px; margin: 20px auto; padding: 15px; background: #f5f5f5;">
+
+<div style="margin-bottom: 12px;">
+    <a href="truefans-connect.html" style="text-decoration: none; color: rgba(0,0,0,0.5); font-size: 13px; font-weight: 500;">&larr; Back to TrueFans CONNECT</a>
+</div>
+
+<div style="background: linear-gradient(135deg, #1a73e8, #4285f4); color: white; padding: 22px; border-radius: 14px; text-align: center; margin-bottom: 18px;">
+    <h1 style="margin: 0; font-size: 30px;">🎵 TrueFans Venue Calculator</h1>
+    <p style="margin: 6px 0 0 0; opacity: 0.9; font-size: 16px;">See your passive income potential</p>
+</div>
+
+<div style="background: white; padding: 24px; border-radius: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+
+    <div style="background: #f8f9fa; padding: 18px; border-radius: 10px; margin-bottom: 18px;">
+        <h3 style="margin: 0 0 14px 0; font-size: 18px; color: #333;">Artist Assumptions</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div>
+                <label style="display: block; margin-bottom: 5px; color: #555; font-size: 15px;">Number in Audience</label>
+                <input type="number" id="audience" value="100" min="0" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px; color: #555; font-size: 15px;">Percentage who'll donate</label>
+                <input type="number" id="donatePercent" value="20" min="0" max="100" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px; color: #555; font-size: 15px;">Avg Donation (₱)</label>
+                <input type="number" id="avgDonation" value="50" min="0" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 5px; color: #555; font-size: 15px;">Shows / per month</label>
+                <input type="number" id="showsPerMonth" value="15" min="0" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
+            </div>
+        </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+        <div>
+            <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #333; font-size: 15px;">Artists you'll refer</label>
+            <input type="number" id="artists" value="25" min="0" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
+            <small style="color: #666; font-size: 13px;">Realistic: 10-30 over 6 months</small>
+        </div>
+        <div>
+            <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #333; font-size: 15px;">Venues you'll refer</label>
+            <input type="number" id="venues" value="5" min="0" style="width: 100%; padding: 10px; font-size: 18px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box;" onchange="calc()" oninput="calc()">
+            <small style="color: #666; font-size: 13px;">Venues you know well: 2-10</small>
+        </div>
+    </div>
+
+    <div style="background: linear-gradient(135deg, #1a73e8, #4285f4); color: white; padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 18px;">
+        <div style="font-size: 15px; opacity: 0.9;">Monthly Passive Income</div>
+        <div id="monthly" style="font-size: 44px; font-weight: bold; margin: 6px 0;">₱0</div>
+        <div id="monthlyUsd" style="font-size: 24px; font-weight: bold; opacity: 0.9;">$0</div>
+    </div>
+
+    <div style="background: #f8f9fa; padding: 14px 18px; border-radius: 10px; margin-bottom: 14px;">
+        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #ddd; font-size: 16px;">
+            <span style="color: #555;">Tier 1 (Direct artists)</span>
+            <span><span id="tier1" style="font-weight: bold; color: #1a73e8;">₱0</span> <span id="tier1Usd" style="font-size: 13px; color: #666;">$0</span></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #ddd; font-size: 16px;">
+            <span style="color: #555;">Tier 2 (Sub-venue artists)</span>
+            <span><span id="tier2" style="font-weight: bold; color: #1a73e8;">₱0</span> <span id="tier2Usd" style="font-size: 13px; color: #666;">$0</span></span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 10px 0 4px 0; border-top: 2px solid #1a73e8; margin-top: 6px; font-size: 16px;">
+            <span style="font-weight: bold; color: #333;">Annual Income</span>
+            <span><span id="annual" style="font-weight: bold; color: #1a73e8; font-size: 19px;">₱0</span> <span id="annualUsd" style="font-weight: bold; color: #1a73e8; font-size: 15px;">$0</span></span>
+        </div>
+    </div>
+
+    <div style="background: #e8f5e9; border-left: 4px solid #4caf50; padding: 12px 14px; border-radius: 5px; margin-bottom: 14px;">
+        <p id="summary" style="margin: 0; font-size: 15px; color: #2e7d32; line-height: 1.5;"></p>
+    </div>
+
+    <button onclick="window.location.href='mailto:darryl@truefansconnect.com'" style="width: 100%; padding: 14px; background: linear-gradient(135deg, #1a73e8, #4285f4); color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; box-sizing: border-box;">
+        Partner With TrueFans
+    </button>
+
+</div>
+
+<div style="text-align: center; margin-top: 12px; font-size: 13px; color: #666; line-height: 1.5;">
+    Platform built • Payments integrated • Artists keep 80% • ₱55.5 = $1 USD
+</div>
+
+<script>
+const PHP_TO_USD = 55.5;
+
+function formatPHP(amount) {
+    if (isNaN(amount)) return '₱0';
+    return '₱' + Math.round(amount).toLocaleString('en-PH');
+}
+
+function formatUSD(amount) {
+    if (isNaN(amount)) return '$0';
+    return '$' + Math.round(amount).toLocaleString('en-US');
+}
+
+function calc() {
+    const audience = parseInt(document.getElementById('audience').value) || 0;
+    const donatePercent = parseFloat(document.getElementById('donatePercent').value) || 0;
+    const avgDonation = parseInt(document.getElementById('avgDonation').value) || 0;
+    const showsPerMonth = parseInt(document.getElementById('showsPerMonth').value) || 0;
+    const artists = parseInt(document.getElementById('artists').value) || 0;
+    const venues = parseInt(document.getElementById('venues').value) || 0;
+
+    // TrueFans per show: audience × donate% × avg donation per donator
+    const donators = audience * (donatePercent / 100);
+    const truefansPerShow = donators * avgDonation;
+
+    // Tier 1: Direct artists (2.5% of their revenue)
+    const tier1Php = artists * showsPerMonth * truefansPerShow * 0.025;
+    const tier1Usd = tier1Php / PHP_TO_USD;
+
+    // Tier 2: Artists from recruited venues (2.5% of their revenue)
+    // Each venue brings ~15 artists
+    const tier2Php = venues * 15 * showsPerMonth * truefansPerShow * 0.025;
+    const tier2Usd = tier2Php / PHP_TO_USD;
+
+    // Monthly and annual totals
+    const monthlyPhp = tier1Php + tier2Php;
+    const monthlyUsd = monthlyPhp / PHP_TO_USD;
+    const annualPhp = monthlyPhp * 12;
+    const annualUsd = annualPhp / PHP_TO_USD;
+
+    const totalArtists = artists + (venues * 15);
+
+    // Update displays
+    document.getElementById('tier1').textContent = formatPHP(tier1Php);
+    document.getElementById('tier1Usd').textContent = formatUSD(tier1Usd);
+    document.getElementById('tier2').textContent = formatPHP(tier2Php);
+    document.getElementById('tier2Usd').textContent = formatUSD(tier2Usd);
+    document.getElementById('monthly').textContent = formatPHP(monthlyPhp);
+    document.getElementById('monthlyUsd').textContent = formatUSD(monthlyUsd);
+    document.getElementById('annual').textContent = formatPHP(annualPhp);
+    document.getElementById('annualUsd').textContent = formatUSD(annualUsd);
+    document.getElementById('summary').textContent =
+        'By recruiting ' + artists + ' artist' + (artists !== 1 ? 's' : '') +
+        ' and ' + venues + ' venue' + (venues !== 1 ? 's' : '') +
+        ', you help ' + totalArtists + ' total artist' + (totalArtists !== 1 ? 's' : '') +
+        ' earn extra income while you make ' + formatPHP(annualPhp) +
+        ' (' + formatUSD(annualUsd) + ') per year passively.';
+}
+
+// Initialize calculator on page load
+calc();
+</script>
+
+</body>
+</html>

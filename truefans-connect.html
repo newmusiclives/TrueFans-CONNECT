@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrueFans CONNECT - Earn More From Live Music</title>
+<meta name="theme-color" content="#990FFA">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="https://truefansconnect.com/favicon.ico">
+<style>
+    /* Font loaded via link tag in head for performance */
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: #ffffff;
+        color: #1a1a2e;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* Gradient text utility */
+    .grad-green {
+        background: linear-gradient(to right, #059669, #10b981);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .grad-purple {
+        background: linear-gradient(to right, #7c3aed, #ec4899);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* Nav */
+    .nav {
+        position: fixed; top: 0; width: 100%; z-index: 100; padding: 12px 16px;
+    }
+    .nav-inner {
+        max-width: 72rem; margin: 0 auto;
+        background: rgba(255,255,255,0.85); backdrop-filter: blur(16px);
+        border: 1px solid rgba(0,0,0,0.06);
+        border-radius: 14px; padding: 12px 24px;
+        display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand {
+        font-size: 17px; font-weight: 800; color: #1a1a2e;
+        text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 28px; align-items: center; }
+    .nav-links a {
+        text-decoration: none; color: rgba(26,26,46,0.5);
+        font-size: 13px; font-weight: 500; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #1a1a2e; }
+    .nav-links a.btn-nav, .nav-mobile a.btn-nav { color: #ffffff !important; }
+    .btn-nav {
+        background: linear-gradient(135deg, #7c3aed, #990FFA);
+        color: #ffffff; border: none; padding: 9px 20px; border-radius: 8px;
+        font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none;
+        display: inline-block;
+    }
+    .btn-lang {
+        background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.08);
+        padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;
+        cursor: pointer; color: rgba(26,26,46,0.6); font-family: inherit;
+        transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-lang:hover { background: rgba(0,0,0,0.08); color: #1a1a2e; }
+
+    /* Hero */
+    .hero {
+        padding: 140px 24px 100px;
+        text-align: center;
+        background: linear-gradient(180deg, #ffffff 0%, #f8f6ff 100%);
+        position: relative; overflow: hidden;
+    }
+    .hero::before {
+        content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+        width: 800px; height: 800px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(153,15,250,0.06) 0%, transparent 70%);
+        pointer-events: none;
+    }
+    .hero-inner { max-width: 680px; margin: 0 auto; position: relative; }
+    .hero-badge {
+        display: inline-block; padding: 6px 16px; border-radius: 20px;
+        background: rgba(153,15,250,0.08); color: #7c3aed;
+        font-size: 12px; font-weight: 700; letter-spacing: 1px;
+        text-transform: uppercase; margin-bottom: 24px;
+    }
+    .hero h1 {
+        font-size: 48px; font-weight: 800; line-height: 1.15; margin-bottom: 20px;
+    }
+    .hero p {
+        font-size: 17px; line-height: 1.7; color: rgba(26,26,46,0.55);
+        margin-bottom: 36px; max-width: 520px; margin-left: auto; margin-right: auto;
+    }
+    .hero-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-hero-artist {
+        background: linear-gradient(135deg, #f093fb, #f5576c);
+        color: white; border: none; padding: 14px 32px; border-radius: 10px;
+        font-size: 15px; font-weight: 700; cursor: pointer;
+        text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+        box-shadow: 0 4px 20px rgba(245,87,108,0.25); transition: all 0.2s;
+    }
+    .btn-hero-artist:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,87,108,0.35); }
+    .btn-hero-venue {
+        background: linear-gradient(135deg, #1a73e8, #4285f4);
+        color: white; border: none; padding: 14px 32px; border-radius: 10px;
+        font-size: 15px; font-weight: 700; cursor: pointer;
+        text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+        box-shadow: 0 4px 20px rgba(26,115,232,0.25); transition: all 0.2s;
+    }
+    .btn-hero-venue:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(26,115,232,0.35); }
+
+    /* Stats bar */
+    .stats-bar {
+        max-width: 72rem; margin: -40px auto 0; padding: 0 24px; position: relative; z-index: 10;
+    }
+    .stats-inner {
+        background: white; border-radius: 16px; padding: 32px 48px;
+        box-shadow: 0 8px 40px rgba(0,0,0,0.06); border: 1px solid rgba(0,0,0,0.04);
+        display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; text-align: center;
+    }
+    .stat-number {
+        font-size: 32px; font-weight: 800; margin-bottom: 4px;
+    }
+    .stat-label { font-size: 13px; color: rgba(26,26,46,0.5); font-weight: 500; }
+
+    /* Section shared */
+    .section-wrap {
+        max-width: 72rem; margin: 0 auto; padding: 100px 24px;
+    }
+    .section-title {
+        text-align: center; margin-bottom: 56px;
+    }
+    .section-title h2 {
+        font-size: 36px; font-weight: 800; margin-bottom: 12px;
+    }
+    .section-title p {
+        font-size: 16px; color: rgba(26,26,46,0.5); max-width: 480px; margin: 0 auto;
+    }
+
+    /* How it works */
+    .how-grid {
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    }
+    .how-card {
+        padding: 32px 28px; border-radius: 16px;
+        border: 1px solid rgba(0,0,0,0.05);
+        background: #fafafa; transition: all 0.3s;
+    }
+    .how-card:hover { background: white; box-shadow: 0 8px 30px rgba(0,0,0,0.06); transform: translateY(-2px); }
+    .how-num {
+        width: 40px; height: 40px; border-radius: 10px;
+        background: linear-gradient(135deg, #7c3aed, #ec4899);
+        color: white; font-size: 16px; font-weight: 800;
+        display: flex; align-items: center; justify-content: center;
+        margin-bottom: 18px;
+    }
+    .how-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+    .how-card p { font-size: 14px; color: rgba(26,26,46,0.55); line-height: 1.65; }
+
+    /* Split artist/venue */
+    .split-bg { background: linear-gradient(180deg, #fafafa, #fff); }
+    .split-grid {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+    }
+    .card {
+        border-radius: 20px; padding: 40px; position: relative;
+    }
+    .card-artist {
+        background: linear-gradient(160deg, #fdf2f8 0%, #fce7f3 50%, #fff1f2 100%);
+        border: 1px solid rgba(236,72,153,0.12);
+    }
+    .card-venue {
+        background: linear-gradient(160deg, #eff6ff 0%, #dbeafe 50%, #e0f2fe 100%);
+        border: 1px solid rgba(59,130,246,0.12);
+    }
+    .card-label {
+        font-size: 11px; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 1.5px; margin-bottom: 14px;
+    }
+    .card-artist .card-label { color: #ec4899; }
+    .card-venue .card-label { color: #3b82f6; }
+    .card h3 { font-size: 24px; font-weight: 800; margin-bottom: 12px; }
+    .card p { font-size: 14px; color: rgba(26,26,46,0.55); line-height: 1.7; margin-bottom: 20px; }
+    .card ul { list-style: none; margin-bottom: 28px; }
+    .card li {
+        padding: 6px 0; font-size: 14px; color: rgba(26,26,46,0.65);
+        display: flex; align-items: center; gap: 10px;
+    }
+    .ck-g { color: #10b981; font-weight: 700; font-size: 15px; }
+    .ck-b { color: #3b82f6; font-weight: 700; font-size: 15px; }
+    .btn-card {
+        color: white; border: none; padding: 13px 28px; border-radius: 10px;
+        font-size: 15px; font-weight: 700; cursor: pointer;
+        text-decoration: none; display: inline-block; transition: all 0.2s;
+    }
+    .btn-card:hover { transform: translateY(-2px); }
+    .btn-card-artist {
+        background: linear-gradient(135deg, #f093fb, #f5576c);
+        box-shadow: 0 4px 16px rgba(245,87,108,0.25);
+    }
+    .btn-card-venue {
+        background: linear-gradient(135deg, #1a73e8, #4285f4);
+        box-shadow: 0 4px 16px rgba(26,115,232,0.25);
+    }
+
+    /* Benefits row */
+    .benefits-grid {
+        display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+    }
+    .benefit {
+        padding: 28px 24px; border-radius: 14px; text-align: center;
+        border: 1px solid rgba(0,0,0,0.05); background: white;
+        transition: all 0.3s;
+    }
+    .benefit:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.06); transform: translateY(-2px); }
+    .benefit-emoji { font-size: 32px; margin-bottom: 14px; }
+    .benefit h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .benefit p { font-size: 13px; color: rgba(26,26,46,0.5); line-height: 1.6; }
+
+    /* CTA */
+    .cta {
+        padding: 80px 24px;
+        background: linear-gradient(135deg, #1a1a2e 0%, #2d1b69 50%, #4c1d95 100%);
+        text-align: center; color: white; position: relative; overflow: hidden;
+    }
+    .cta::before {
+        content: ''; position: absolute; top: -100px; right: -100px;
+        width: 400px; height: 400px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(236,72,153,0.15) 0%, transparent 70%);
+    }
+    .cta::after {
+        content: ''; position: absolute; bottom: -100px; left: -100px;
+        width: 400px; height: 400px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(16,185,129,0.15) 0%, transparent 70%);
+    }
+    .cta-inner { position: relative; z-index: 1; }
+    .cta h2 { font-size: 36px; font-weight: 800; margin-bottom: 14px; }
+    .cta p { font-size: 16px; opacity: 0.7; max-width: 440px; margin: 0 auto 32px; line-height: 1.6; }
+    .cta-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    /* Footer */
+    .footer {
+        background: #fafafa; border-top: 1px solid rgba(0,0,0,0.04);
+        padding: 48px 24px 28px;
+    }
+    .footer-inner { max-width: 72rem; margin: 0 auto; }
+    .footer-top {
+        display: flex; justify-content: space-between; align-items: start;
+        margin-bottom: 32px; flex-wrap: wrap; gap: 32px;
+    }
+    .footer-brand { font-size: 16px; font-weight: 800; margin-bottom: 8px; }
+    .footer-tagline { font-size: 13px; color: rgba(26,26,46,0.4); max-width: 280px; line-height: 1.5; }
+    .footer-cols { display: flex; gap: 48px; }
+    .footer-col h5 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(26,26,46,0.35); margin-bottom: 12px; }
+    .footer-col a { display: block; font-size: 13px; color: rgba(26,26,46,0.5); text-decoration: none; margin-bottom: 6px; transition: color 0.2s; }
+    .footer-col a:hover { color: #1a1a2e; }
+    .footer-bottom {
+        padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.05);
+        font-size: 11px; color: rgba(26,26,46,0.3); text-align: center; line-height: 1.6;
+    }
+
+    /* Mobile nav bar with lang + get started */
+    .nav-mobile {
+        display: none; align-items: center; gap: 10px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .nav { padding: 8px 12px; }
+        .nav-inner { padding: 10px 16px; border-radius: 12px; }
+        .nav-brand { font-size: 15px; }
+        .nav-links { display: none; }
+        .nav-mobile { display: flex; }
+
+        .hero { padding: 100px 20px 60px; }
+        .hero h1 { font-size: 30px; }
+        .hero p { font-size: 15px; margin-bottom: 28px; }
+        .hero-badge { font-size: 11px; margin-bottom: 18px; }
+        .hero-buttons { flex-direction: column; gap: 12px; }
+        .btn-hero-artist, .btn-hero-venue { width: 100%; justify-content: center; padding: 14px 24px; }
+
+        .stats-bar { margin-top: -30px; padding: 0 12px; }
+        .stats-inner { grid-template-columns: 1fr 1fr; gap: 16px; padding: 20px; }
+        .stat-number { font-size: 26px; }
+        .stat-label { font-size: 11px; }
+
+        .section-wrap { padding: 60px 16px; }
+        .section-title h2 { font-size: 28px; }
+        .section-title p { font-size: 14px; }
+        .section-title { margin-bottom: 36px; }
+
+        .how-grid { grid-template-columns: 1fr; gap: 16px; }
+        .how-card { padding: 24px 20px; }
+
+        .split-grid { grid-template-columns: 1fr; gap: 20px; }
+        .card { padding: 28px 24px; }
+        .card h3 { font-size: 22px; }
+
+        .benefits-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+        .benefit { padding: 20px 16px; }
+        .benefit-emoji { font-size: 28px; margin-bottom: 10px; }
+        .benefit h4 { font-size: 14px; }
+        .benefit p { font-size: 12px; }
+
+        .cta { padding: 60px 20px; }
+        .cta h2 { font-size: 26px; }
+        .cta p { font-size: 14px; }
+        .cta-buttons { flex-direction: column; gap: 12px; }
+        .cta-buttons a { width: 100%; justify-content: center; text-align: center; }
+
+        .footer { padding: 36px 16px 24px; }
+        .footer-top { flex-direction: column; gap: 24px; }
+        .footer-cols { flex-wrap: wrap; gap: 24px; }
+        .footer-col { min-width: 120px; }
+    }
+    @media (max-width: 480px) {
+        .hero h1 { font-size: 26px; }
+        .benefits-grid { grid-template-columns: 1fr; }
+        .stats-inner { gap: 12px; padding: 16px; }
+        .stat-number { font-size: 22px; }
+    }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+    <div class="nav-inner">
+        <a class="nav-brand" href="#">TrueFans CONNECT&#8482;</a>
+        <div class="nav-links">
+            <a href="#how">How It Works</a>
+            <a href="#for-who">Artists & Venues</a>
+            <a href="#why">Why TrueFans</a>
+            <button class="btn-lang" id="langBtn" onclick="toggleLang()">&#127477;&#127469; Tagalog</button>
+            <a href="mailto:darryl@truefansconnect.com" class="btn-nav" data-en="Get Started" data-tl="Magsimula Na">Get Started</a>
+        </div>
+        <div class="nav-mobile">
+            <button class="btn-lang" id="langBtnMobile" onclick="toggleLang()">&#127477;&#127469;</button>
+            <a href="mailto:darryl@truefansconnect.com" class="btn-nav" data-en="Get Started" data-tl="Magsimula">Get Started</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-badge" data-en="Live Music Platform" data-tl="Plataporma ng Live Music">Live Music Platform</div>
+        <h1>
+            <span class="grad-green">Artists</span> <span data-en="earn more." data-tl="kumita ng mas malaki.">earn more.</span> <span class="grad-purple">Venues</span> <span data-en="earn passively." data-tl="kumita nang walang gastos.">earn passively.</span> <span style="color:#1a1a2e;" data-en="Fans connect." data-tl="Fans kumonekta.">Fans connect.</span>
+        </h1>
+        <p data-en="TrueFans CONNECT lets fans donate to artists during live shows via QR code. Artists keep their show fee plus 80% of donations. Venues earn referral commissions on every artist. Free for everyone." data-tl="Sa TrueFans CONNECT, makakapag-donate ang mga fans sa artists habang live show gamit ang QR code. Nananatili ang bayad sa bawat show ng artist at dagdag pa ang 80% ng donations. Kumikita ang mga venue ng referral commission sa bawat artist. Libre para sa lahat.">TrueFans CONNECT lets fans donate to artists during live shows via QR code. Artists keep their show fee plus 80% of donations. Venues earn referral commissions on every artist. Free for everyone.</p>
+        <div class="hero-buttons">
+            <a href="truefans-artist-calculator.html" class="btn-hero-artist">Artist Calculator</a>
+            <a href="truefans-venue-calculator.html" class="btn-hero-venue">Venue Calculator</a>
+        </div>
+    </div>
+</section>
+
+<!-- Stats -->
+<div class="stats-bar">
+    <div class="stats-inner">
+        <div>
+            <div class="stat-number grad-green">80%</div>
+            <div class="stat-label" data-en="Artists keep per donation" data-tl="Natatanggap ng artist bawat donasyon">Artists keep per donation</div>
+        </div>
+        <div>
+            <div class="stat-number grad-purple">2.5%</div>
+            <div class="stat-label" data-en="Referral commission for artists & venues" data-tl="Referral commission para sa artists at venues">Referral commission for artists & venues</div>
+        </div>
+        <div>
+            <div class="stat-number grad-purple">2 Tiers</div>
+            <div class="stat-label" data-en="Earn on direct + indirect referrals" data-tl="Kumita sa direct at indirect referrals">Earn on direct + indirect referrals</div>
+        </div>
+        <div>
+            <div class="stat-number grad-green">&#8369;0</div>
+            <div class="stat-label" data-en="Free for artists & venues" data-tl="Libre para sa artists at venues">Free for artists & venues</div>
+        </div>
+    </div>
+</div>
+
+<!-- How It Works -->
+<section id="how" class="section-wrap">
+    <div class="section-title">
+        <h2 data-en="How it works" data-tl="Paano ito gumagana">How it works</h2>
+        <p data-en="Simple for artists, effortless for venues, instant for fans." data-tl="Simple para sa artists, walang effort para sa venues, instant para sa fans.">Simple for artists, effortless for venues, instant for fans.</p>
+    </div>
+    <div class="how-grid">
+        <div class="how-card">
+            <div class="how-num">1</div>
+            <h3 data-en="Venue hosts, artist performs" data-tl="Venue ang host, artist ang tumutugtog">Venue hosts, artist performs</h3>
+            <p data-en="The artist displays their TrueFans QR code at the venue. Venues can promote it too — the more donations, the more everyone earns." data-tl="Ipinapakita ng artist ang kanilang TrueFans QR code sa venue. Puwede ring i-promote ng venue — mas maraming donasyon, mas malaki ang kita ng lahat.">The artist displays their TrueFans QR code at the venue. Venues can promote it too — the more donations, the more everyone earns.</p>
+        </div>
+        <div class="how-card">
+            <div class="how-num">2</div>
+            <h3 data-en="Fans scan and donate" data-tl="Mag-scan at mag-donate ang fans">Fans scan and donate</h3>
+            <p data-en="Audience members scan the code, pick an amount, and pay securely from their phone. No app needed — works in any browser in seconds." data-tl="I-scan lang ng audience ang code, pumili ng halaga, at magbayad nang secure sa phone. Hindi kailangan ng app — gumagana sa kahit anong browser sa ilang segundo.">Audience members scan the code, pick an amount, and pay securely from their phone. No app needed — works in any browser in seconds.</p>
+        </div>
+        <div class="how-card">
+            <div class="how-num">3</div>
+            <h3 data-en="Everyone earns" data-tl="Lahat kumikita">Everyone earns</h3>
+            <p data-en="Artists keep their show fee plus 80% of donations. Venues and referrers earn 2.5% commissions across two tiers. Everyone wins." data-tl="Nananatili ang show fee ng artist at dagdag pa ang 80% ng donations. Ang mga venue at referrer ay kumikita ng 2.5% commission sa dalawang tier. Panalo ang lahat.">Artists keep their show fee plus 80% of donations. Venues and referrers earn 2.5% commissions across two tiers. Everyone wins.</p>
+        </div>
+    </div>
+</section>
+
+<!-- For Artists & Venues -->
+<section id="for-who" class="split-bg">
+    <div class="section-wrap">
+        <div class="section-title">
+            <h2><span data-en="Built for" data-tl="Ginawa para sa">Built for</span> <span class="grad-purple">artists</span> <span data-en="and" data-tl="at">and</span> <span class="grad-green">venues</span></h2>
+            <p data-en="See what you could earn with the calculators" data-tl="Tingnan kung magkano ang puwede mong kitain gamit ang mga calculator">See what you could earn with the calculators</p>
+        </div>
+        <div class="split-grid">
+            <div class="card card-artist">
+                <div class="card-label" data-en="For Artists" data-tl="Para sa mga Artist">For Artists</div>
+                <h3 data-en="Earn more every show" data-tl="Kumita ng mas malaki bawat show">Earn more every show</h3>
+                <p data-en="Your talent deserves more than a tip jar. TrueFans adds digital donations on top of whatever you already earn per show." data-tl="Ang talento mo ay deserve ng higit pa sa tip jar. Ang TrueFans ay nagdadagdag ng digital donations sa ibabaw ng kinikita mo bawat show.">Your talent deserves more than a tip jar. TrueFans adds digital donations on top of whatever you already earn per show.</p>
+                <ul>
+                    <li><span class="ck-g">&#10003;</span> <span data-en="Keep your per-show fee — TrueFans is extra" data-tl="Panatilihin ang bayad sa show — ang TrueFans ay dagdag">Keep your per-show fee — TrueFans is extra</span></li>
+                    <li><span class="ck-g">&#10003;</span> <span data-en="Receive 80% of all fan donations" data-tl="Makatanggap ng 80% ng lahat ng donasyon">Receive 80% of all fan donations</span></li>
+                    <li><span class="ck-g">&#10003;</span> <span data-en="Earn 2.5% on artists you refer" data-tl="Kumita ng 2.5% sa mga artist na i-refer mo">Earn 2.5% on artists you refer</span></li>
+                    <li><span class="ck-g">&#10003;</span> <span data-en="Earn 2.5% on second-tier referrals" data-tl="Kumita ng 2.5% sa second-tier referrals">Earn 2.5% on second-tier referrals</span></li>
+                    <li><span class="ck-g">&#10003;</span> <span data-en="Free to join — zero fees" data-tl="Libreng sumali — walang bayad">Free to join — zero fees</span></li>
+                </ul>
+                <a href="truefans-artist-calculator.html" class="btn-card btn-card-artist" data-en="Calculate your earnings &#8594;" data-tl="Kalkulahin ang kita mo &#8594;">Calculate your earnings &#8594;</a>
+            </div>
+            <div class="card card-venue">
+                <div class="card-label" data-en="For Venues" data-tl="Para sa mga Venue">For Venues</div>
+                <h3 data-en="Passive income from live music" data-tl="Passive income mula sa live music">Passive income from live music</h3>
+                <p data-en="Your venue already hosts great artists. Earn commissions whenever those artists receive donations through TrueFans." data-tl="Ang venue mo ay may magagaling na artists na. Kumita ng commission tuwing makakatanggap ng donasyon ang mga artist sa pamamagitan ng TrueFans.">Your venue already hosts great artists. Earn commissions whenever those artists receive donations through TrueFans.</p>
+                <ul>
+                    <li><span class="ck-b">&#10003;</span> <span data-en="Earn 2.5% on every artist you refer" data-tl="Kumita ng 2.5% sa bawat artist na i-refer mo">Earn 2.5% on every artist you refer</span></li>
+                    <li><span class="ck-b">&#10003;</span> <span data-en="Earn 2.5% on sub-venue referrals" data-tl="Kumita ng 2.5% sa sub-venue referrals">Earn 2.5% on sub-venue referrals</span></li>
+                    <li><span class="ck-b">&#10003;</span> <span data-en="Completely free for venues" data-tl="Completely libre para sa mga venue">Completely free for venues</span></li>
+                    <li><span class="ck-b">&#10003;</span> <span data-en="Help artists earn more and stay loyal" data-tl="Tulungan ang artists mo kumita ng mas malaki at manatiling tapat">Help artists earn more and stay loyal</span></li>
+                    <li><span class="ck-b">&#10003;</span> <span data-en="Recurring passive income every month" data-tl="Paulit-ulit na passive income bawat buwan">Recurring passive income every month</span></li>
+                </ul>
+                <a href="truefans-venue-calculator.html" class="btn-card btn-card-venue" data-en="Calculate venue income &#8594;" data-tl="Kalkulahin ang kita ng venue &#8594;">Calculate venue income &#8594;</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why -->
+<section id="why">
+    <div class="section-wrap">
+        <div class="section-title">
+            <h2><span data-en="Why" data-tl="Bakit">Why</span> <span class="grad-green">TrueFans CONNECT</span></h2>
+            <p data-en="A better deal for artists, venues, and fans" data-tl="Mas magandang deal para sa artists, venues, at fans">A better deal for artists, venues, and fans</p>
+        </div>
+        <div class="benefits-grid">
+            <div class="benefit">
+                <div class="benefit-emoji">&#127908;</div>
+                <h4 data-en="Artists: Extra Income" data-tl="Artists: Dagdag Kita">Artists: Extra Income</h4>
+                <p data-en="Keep your per-show fee. TrueFans adds 80% of fan donations on top — it's pure extra earnings." data-tl="Panatilihin ang bayad sa show. Ang TrueFans ay nagdadagdag ng 80% ng donasyon — purong dagdag na kita.">Keep your per-show fee. TrueFans adds 80% of fan donations on top — it's pure extra earnings.</p>
+            </div>
+            <div class="benefit">
+                <div class="benefit-emoji">&#127983;</div>
+                <h4 data-en="Venues: Passive Revenue" data-tl="Venues: Passive na Kita">Venues: Passive Revenue</h4>
+                <p data-en="Earn 2.5% commissions on every artist at your venue. No effort required — just host great music." data-tl="Kumita ng 2.5% commission sa bawat artist sa venue mo. Walang effort na kailangan — mag-host lang ng magandang musika.">Earn 2.5% commissions on every artist at your venue. No effort required — just host great music.</p>
+            </div>
+            <div class="benefit">
+                <div class="benefit-emoji">&#128279;</div>
+                <h4 data-en="Both: 2-Tier Referrals" data-tl="Pareho: 2-Tier Referrals">Both: 2-Tier Referrals</h4>
+                <p data-en="Artists and venues both earn 2.5% on direct referrals and 2.5% on second-tier referrals." data-tl="Parehong kumikita ang artists at venues ng 2.5% sa direct referrals at 2.5% sa second-tier referrals.">Artists and venues both earn 2.5% on direct referrals and 2.5% on second-tier referrals.</p>
+            </div>
+            <div class="benefit">
+                <div class="benefit-emoji">&#9889;</div>
+                <h4 data-en="Both: Free & Instant" data-tl="Pareho: Libre at Instant">Both: Free & Instant</h4>
+                <p data-en="No signup fees, no monthly costs. Artists and venues join for free and start earning immediately." data-tl="Walang signup fees, walang monthly costs. Sumali nang libre ang artists at venues at kumita agad.">No signup fees, no monthly costs. Artists and venues join for free and start earning immediately.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+    <div class="cta-inner">
+        <h2 data-en="Ready to earn more?" data-tl="Handa ka na bang kumita ng mas malaki?">Ready to earn more?</h2>
+        <p data-en="Whether you're an artist or a venue, TrueFans CONNECT is free to join. See what you could be making." data-tl="Artist ka man o venue, libre ang pagsali sa TrueFans CONNECT. Tingnan kung magkano ang puwede mong kitain.">Whether you're an artist or a venue, TrueFans CONNECT is free to join. See what you could be making.</p>
+        <div class="cta-buttons">
+            <a href="truefans-artist-calculator.html" class="btn-hero-artist" style="padding: 15px 36px; font-size: 16px;">I'm an Artist</a>
+            <a href="truefans-venue-calculator.html" class="btn-hero-venue" style="padding: 15px 36px; font-size: 16px;">I'm a Venue</a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-top">
+            <div>
+                <div class="footer-brand">TrueFans CONNECT&#8482;</div>
+                <div class="footer-tagline">Supporting music artists in real-time with geolocation-powered donations. Discover live music and make a difference.</div>
+            </div>
+            <div class="footer-cols">
+                <div class="footer-col">
+                    <h5>Platform</h5>
+                    <a href="#how">How It Works</a>
+                    <a href="https://truefansconnect.com/discover">Discover Shows</a>
+                    <a href="https://truefansconnect.com/support">Support Music</a>
+                </div>
+                <div class="footer-col">
+                    <h5>Artists</h5>
+                    <a href="truefans-artist-calculator.html">Artist Calculator</a>
+                    <a href="https://truefansconnect.com/signup/artist/benefits">Sign Up</a>
+                    <a href="https://truefansconnect.com/help">Resources</a>
+                </div>
+                <div class="footer-col">
+                    <h5>Venues</h5>
+                    <a href="truefans-venue-calculator.html">Venue Calculator</a>
+                    <a href="https://truefansconnect.com/venues/partner">Sign Up</a>
+                    <a href="https://truefansconnect.com/help">Guide</a>
+                </div>
+                <div class="footer-col">
+                    <h5>Company</h5>
+                    <a href="https://truefansconnect.com/about">About</a>
+                    <a href="https://truefansconnect.com/contact">Contact</a>
+                    <a href="https://truefansconnect.com/help">Help</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 TrueFans CONNECT&#8482;. Made with love for the music community.<br>
+            A subsidiary of New Music Lives, owned and operated by Lightwork Digital.
+        </div>
+    </div>
+</footer>
+
+<script>
+let currentLang = 'en';
+
+function toggleLang() {
+    currentLang = currentLang === 'en' ? 'tl' : 'en';
+
+    document.getElementById('langBtn').innerHTML = currentLang === 'en'
+        ? '&#127477;&#127469; Tagalog'
+        : '&#127468;&#127463; English';
+    document.getElementById('langBtnMobile').innerHTML = currentLang === 'en'
+        ? '&#127477;&#127469;'
+        : '&#127468;&#127463;';
+
+    document.querySelectorAll('[data-en][data-tl]').forEach(el => {
+        el.innerHTML = el.getAttribute('data-' + currentLang);
+    });
+}
+</script>
+
+</body>
+</html>
